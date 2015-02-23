@@ -1,0 +1,7 @@
+in x1: 3 at $5.50 each
+out x1: 2 at $7.50 each
+in x2: 2 at $7.33 each
+in x3: 6 at $2.78 each
+out x3: 5 at $5.00 each
+in x4: 5 at $2.99 each
+out x4: 5 at $4.50 each

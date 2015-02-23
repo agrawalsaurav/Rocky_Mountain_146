@@ -1,0 +1,12 @@
+Table 1: Current Inventory
+Serial #           Item                Quantity             Cost 
+0                   x1                    1                 $5.5 
+2                   x2                    2                $7.33 
+3                   x3                    1                $2.78 
+
+
+Table 2: Cost Basis and Gains
+Serial #           Item                Quantity         Cost Basis($)         Gains($) 
+1                   x1                    2                $11.0                 $4.0 
+4                   x3                    5                $13.9                $11.1 
+6                   x4                    5               $14.95                $7.55 
