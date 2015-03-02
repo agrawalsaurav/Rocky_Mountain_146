@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -80,6 +81,7 @@ public class Read_Load_Save {
 	public void save(LinkedList <Transaction> in_transactions, LinkedList <Transaction> out_transactions) {
 		BufferedWriter writer = null;
 	    try {
+	    	DecimalFormat df = new DecimalFormat("##.##");
 	        //create a temporary file
 	        File output = new File("pa1output.txt");
 
@@ -88,24 +90,32 @@ public class Read_Load_Save {
 
 	        writer = new BufferedWriter(new FileWriter(output));
 	        
-	        writer.write("Table 1: Current Inventory\n");
-	        writer.write(String.format("%1$s %2$14s %3$23s %4$16s \n", "Serial #", "Item", "Quantity", "Cost"));
+	        writer.write("Table 1: Current Inventory\r\n\r\n");
+	        writer.write(String.format("%1s %14s %23s %16s \r\n\r\n", "Serial #", "Item", "Quantity", "Cost"));
 	        
 	        Iterator<Transaction> i = in_transactions.listIterator();
 	        Transaction t;
 	        while(i.hasNext()) {
 	        	t = i.next();
 //	        	i.next().print_transation();
+//	        	if()
 	        	if(t.getQuantity() > 0)
-	        	writer.write(String.format("%1s %20s %20s %20s \r\n", t.getSerial(), "x"+t.getItem(), t.getQuantity(), "$"+t.getPrice()));
+	        	writer.write(String.format("%1s %20s %20s %20s \r\n", String.format("%02d", t.getSerial()), "x"+t.getItem(), t.getQuantity(), "$"+ String.format("%4.2f", t.getPrice())));
 	        }
-	        writer.write("\n\nTable 2: Cost Basis and Gains\n");
+	        writer.write("\r\n\nTable 2: Cost Basis and Gains\r\n");
 	        writer.write(String.format("%1s %14s %23s %21s %16s \r\n", "Serial #", "Item", "Quantity", "Cost Basis($)", "Gains($)"));
 	        i = out_transactions.listIterator();
 	        while(i.hasNext()) {
 	        	t = i.next();
 //	        	i.next().print_transation();
-	        	writer.write(String.format("%1s %20s %20s %20s %20s \r\n", t.getSerial(), "x"+t.getItem(), t.getQuantity(), "$"+t.getPrice(), "$"+t.getTotal()));
+	        	if(t.getFlag()) {
+	        		writer.write(String.format("%2s %20s %20s %20s %20s \r\n", String.format("%02d", t.getSerial()), "x"+t.getItem(), t.getQuantity(), "Error", "Error"));
+	        		writer.write(t.getError());
+	        		writer.close();
+	        		System.exit(1);
+	        	}
+	        	else
+	        		writer.write(String.format("%1s %20s %20s %20s %20s \r\n", String.format("%02d", t.getSerial()), "x"+t.getItem(), t.getQuantity(), "$"+String.format("%4.2f", t.getPrice()), "$"+String.format("%4.2f", t.getTotal())));
 	        }
 	        
 	    } catch (Exception e) {

@@ -20,14 +20,43 @@ public class Transaction_Processor {
         while(outiter.hasNext()) {
         	out = outiter.next();
         	initer = ins.listIterator();
-        	while(initer.hasNext() && out.getQuantity() > 0) {
+        	float cost = 0;
+        	float total = 0;
+        	int insCount = 0;
+        	int outCount = out.getQuantity();
+        	while(initer.hasNext() ) {
         		in = initer.next();
-        		if(out.getItem() == in.getItem() && out.getQuantity() <= in.getQuantity()) {
-        			in.setQuantity(in.getQuantity() - out.getQuantity());
-        			out.setTotal((out.getQuantity()*out.getPrice()) - (out.getQuantity() * in.getPrice()));
-        			out.setPrice(out.getQuantity() * in.getPrice());   
+        		float soldPrice = out.getPrice();
+        		int inQuantity = in.getQuantity();
+//        		out.setPrice(0);
+        		while((out.getItem() == in.getItem()) && inQuantity > 0 && outCount > 0/*&& out.getQuantity() <= in.getQuantity()*/) {
+        			inQuantity--;
+        			insCount++;
+//        			out.setQuantity(out.getQuantity() - 1);
+        			outCount--;
+        			total += soldPrice - in.getPrice();
+//        			out.setTotal(out.getTotal() + (soldPrice - in.getPrice()));
+//        			out.setPrice(out.getPrice() - in.getPrice());
+        			cost += in.getPrice();  
 //        			out.setQuantity(0);
         		}
+        	}
+        	
+        	if(outCount > 0) {
+        		out.setFlag(true);
+        		out.setError("Tried to pull " + out.getQuantity() + " items of x" + out.getItem() + ", but found only " + insCount + " item(s)!\n");
+        	}
+        	else {
+        		out.setPrice(cost);
+            	out.setTotal(total);
+            	initer = ins.listIterator();
+            	while(initer.hasNext() ) {
+            		in = initer.next();
+            		while((out.getItem() == in.getItem()) && in.getQuantity() > 0 && insCount > 0) {
+            			in.setQuantity(in.getQuantity() -1);
+            			insCount--;
+            		}
+            	}
         	}
 //        	i.next().print_transation();
 //        	writer.write(String.format("%1s %20s %20s %20s \r\n", t.getSerial(), "x"+t.getId(), t.getQuantity(), "$"+t.getPrice()));

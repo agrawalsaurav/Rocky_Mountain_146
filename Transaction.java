@@ -7,6 +7,8 @@ public class Transaction {
 	private int quantity;
 	private float price;
 	private float total;
+	private boolean flag;
+	private String error;
 	
 	public Transaction(boolean is_in, int serial_num, int identifier, int item_quantity, float unit_price) {
 		in = is_in;
@@ -15,6 +17,8 @@ public class Transaction {
 		quantity = item_quantity;
 		price = unit_price;
 		total = quantity * price;
+		flag = false;
+		error = "";
 	}
 	
 	public void print_transation() {
@@ -27,6 +31,22 @@ public class Transaction {
 	
 	public int getSerial() {
 		return this.serial;
+	}
+	
+	public String getError() {
+		return error;
+	}
+	
+	public void setError(String newError) {
+		error = newError;
+	}
+	
+	public boolean getFlag() {
+		return flag;
+	}
+	
+	public void setFlag(boolean newFlag) {
+		flag = newFlag;
 	}
 	
 	public boolean is_in() {
@@ -68,19 +88,4 @@ public class Transaction {
 	public void setTotal(float transaction_total) {
 		this.total  = transaction_total;
 	}
-	
-//	public class Item {
-//		int id;
-//		public Item(int identifier) {
-//			id = identifier;
-//		}
-//		
-//		public int getId() {
-//			return id;
-//		}
-//		
-//		public boolean equals(Item other) {
-//			return this.id == other.id;
-//		}
-//	}
 }
